@@ -28,9 +28,15 @@ module Middleman
       end
 
       def filter_file_paths(paths)
-        paths.select {|path|
-          is_image_extension(path.extname) && image_is_optimizable(path)
-        }
+        paths.select do |path|
+          is_image_extension(path.extname)  &&
+          is_filename_regexp(path.basename.to_s) &&
+          image_is_optimizable(path)
+        end
+      end
+
+      def is_filename_regexp(filename)
+        filename.match(@options.filename_regexp)
       end
 
       def is_image_extension(extension)

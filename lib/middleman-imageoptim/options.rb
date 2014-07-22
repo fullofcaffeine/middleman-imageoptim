@@ -7,11 +7,13 @@ module Middleman
       attr_accessor :user_options
       attr_reader :verbose, :nice, :threads, :image_extensions,
         :pngcrush_options, :pngout_options, :optipng_options, :advpng_options,
-        :jpegoptim_options, :jpegtran_options, :gifsicle_options, :svgo_options
+        :jpegoptim_options, :jpegtran_options, :gifsicle_options, :svgo_options, 
+        :filename_regexp
 
       UserOptions = Struct.new(:verbose, :nice, :threads, :image_extensions,
         :pngcrush_options, :pngout_options, :optipng_options, :advpng_options,
-        :jpegoptim_options, :jpegtran_options, :gifsicle_options, :svgo_options)
+        :jpegoptim_options, :jpegtran_options, :gifsicle_options, :svgo_options, 
+        :filename_regexp)
 
       def initialize(options_hash = {})
         @user_options = UserOptions.new(*options_hash)
@@ -31,6 +33,11 @@ module Middleman
 
       def image_extensions
         !@user_options.image_extensions.nil? ? @user_options.image_extensions : %w(.png .jpg .jpeg .gif .svg)
+      end
+
+      def filename_regexp
+        #if no specific regexp is specified, we just match anything
+        @user_options.filename_regexp || //
       end
 
       def pngcrush_options
